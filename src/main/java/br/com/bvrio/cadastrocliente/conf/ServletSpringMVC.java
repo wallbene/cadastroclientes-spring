@@ -6,7 +6,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-
 @WebAppConfiguration
 public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletInitializer {
 
