@@ -34,12 +34,12 @@ public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletI
 		return new Filter[] {encodingFilter};
 	}
 	
-	/*
-	 * @Override
+	
+	 /*@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
 		servletContext.addListener(new RequestContextListener());
 		servletContext.setInitParameter("spring.profiles.active", "dev");
-	}
-	*/
+	}*/
+	
 }
