@@ -19,7 +19,7 @@
 	        <p class="lead text-muted">Essa aplicação foi desenvolvida exclusivamente para o processo seletivo da <strong>BVRio</strong>.
 	        						    Esse é um sistema simples desenvolvido em <strong>Java</strong>, porém aborda diversas
 	        						     ferramentas no desenvolvimento web que a torna robusta e escalável.
-	        						     Uma vesão do projeto pode ser encontrada no <strong>Github</strong>
+	        						     Uma vesão do projeto pode ser encontrada no <a href="https://github.com/wallbene/cadastroclientes-spring"><strong>Github</strong></a>
 	        						 	</p>
 	        					<ul class="list-group">
 	        						<li class="list-group-item active">Tecnologias abordadas</li>

@@ -83,13 +83,15 @@ public class ClienteController {
 		if(cliente.getId() != null){
 			
 			flash.addFlashAttribute("css", "success");
-			flash.addFlashAttribute("msg", "Usuário alterado com sucesso!");
+			flash.addFlashAttribute("msg", "Cliente alterado com sucesso!");
 			dao.atualiza(cliente);
 			
 		}else{
 			//tratando em caso de email existente no banco 
 			try {
 				dao.adiciona(cliente);
+				flash.addFlashAttribute("msg", "Cliente adicionado com sucesso!");		
+				flash.addFlashAttribute("css", "success");
 			}catch (PersistenciaException e) {	
 				result.rejectValue("email", "field.required.cliente.email.unico");
 				return "clientes/form";
@@ -97,8 +99,6 @@ public class ClienteController {
 			
 		}
 		
-			flash.addFlashAttribute("msg", "Usuário adicionado com sucesso!");		
-			flash.addFlashAttribute("css", "success");
 		
 		return "redirect:/clientes"; 
 		
