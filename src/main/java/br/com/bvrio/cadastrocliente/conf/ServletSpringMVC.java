@@ -1,12 +1,15 @@
 package br.com.bvrio.cadastrocliente.conf;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-@WebAppConfiguration
+
 public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
@@ -31,15 +34,14 @@ public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletI
 	protected Filter[] getServletFilters() {
 		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
 		encodingFilter.setEncoding("UTF-8");
-		return new Filter[] {encodingFilter};
+		return new Filter[] {encodingFilter, new OpenEntityManagerInViewFilter()};
 	}
 	
-	
-	/* @Override
+	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
 		servletContext.addListener(new RequestContextListener());
 		servletContext.setInitParameter("spring.profiles.active", "dev");
-	}*/
+	}
 	
 }

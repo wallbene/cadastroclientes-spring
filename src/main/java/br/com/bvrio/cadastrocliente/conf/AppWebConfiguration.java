@@ -9,7 +9,6 @@ import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.DateFormatter;
@@ -25,12 +24,10 @@ import com.google.common.cache.CacheBuilder;
 
 import br.com.bvrio.cadastrocliente.controllers.HomeController;
 import br.com.bvrio.cadastrocliente.daos.ClienteDAO;
-import br.com.bvrio.cadastrocliente.models.Cliente;
 import br.com.bvrio.cadastrocliente.services.UsuarioService;
 
-@Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = { HomeController.class, ClienteDAO.class, UsuarioService.class, Cliente.class, StringToEnumConverterFactory.class})
+@ComponentScan(basePackageClasses = { HomeController.class, ClienteDAO.class, UsuarioService.class, StringToEnumConverterFactory.class})
 @EnableCaching
 public class AppWebConfiguration extends WebMvcConfigurerAdapter {
 	
@@ -71,7 +68,7 @@ public class AppWebConfiguration extends WebMvcConfigurerAdapter {
 	public CacheManager cacheManager(){
 		CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder()
 															.maximumSize(100)
-															.expireAfterAccess(5, TimeUnit.DAYS);
+															.expireAfterAccess(5, TimeUnit.MINUTES);
 		GuavaCacheManager manager = new GuavaCacheManager();
 		manager.setCacheBuilder(builder);
 		return manager;
