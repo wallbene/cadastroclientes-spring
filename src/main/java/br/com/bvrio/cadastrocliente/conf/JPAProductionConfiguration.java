@@ -30,13 +30,13 @@ public class JPAProductionConfiguration {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
 		
-		
 		//usuario:senha@host:port/path
 		URI dbUrl = new URI(envionment.getProperty("DATABASE_URL"));
 		
 		dataSource.setUrl("jdbc:postgresql://"+dbUrl.getHost()+":"+dbUrl.getPort()+dbUrl.getPath());
 		dataSource.setUsername(dbUrl.getUserInfo().split(":")[0]);
 		dataSource.setPassword(dbUrl.getUserInfo().split(":")[1]);
+		
 		return dataSource;
 	}
 
