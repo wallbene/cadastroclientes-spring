@@ -48,7 +48,12 @@ public class UsuarioDAO {
 		}
 		//busca a Role, associa ao usuario e persiste no banco
 		Role role = manager.find(Role.class, "ROLE_ADMIN");
-		if(role == null) throw new RuntimeException("Retornou a role vazia do banco");
+		if(role == null){
+			role = new Role("ROLE_ADMIN");
+			manager.persist(role);
+			role = manager.find(Role.class, role.getNome());
+			
+		}
 		else{
 			System.out.println("Retornou a role corretamente " + role.getNome());
 		}
