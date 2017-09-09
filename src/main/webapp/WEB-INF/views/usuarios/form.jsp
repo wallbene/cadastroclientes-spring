@@ -19,7 +19,7 @@
 				<s:bind path="nome" >
 					<div class="form-group ${status.error ?  'has-error': ''}">
 					 	<label>Nome</label>
-					 	<form:input path="nome" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" type="text" placeholder="Nome"/>
+					 	<form:input path="nome" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" type="text" placeholder="Nome" autofocus="true" required="true"/>
 						<form:errors path="nome" cssClass="control-label"/>
 					</div>
 				</s:bind>
@@ -27,7 +27,7 @@
 				<s:bind path="email">
 					<div class="form-group ${status.error ?  'has-error': ''}">
 						<label>Email</label>
-						<form:input path="email" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" type="email" placeholder="email como acesso" />
+						<form:input path="email" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" type="email" placeholder="email como acesso" required="true" />
 						<form:errors path="email" cssClass="control-label"/>
 					</div>
 				</s:bind>
@@ -35,7 +35,7 @@
 				<s:bind path="senha">
 					<div class="form-group ${status.error ?  'has-error': ''}">
 					<label>senha</label>
-						<form:input path="senha" cssClass="form-control ${status.error ?  'form-control-error': ''}" type="password" placeholder="senha"/>
+						<form:input path="senha" cssClass="form-control ${status.error ?  'form-control-error': ''}" type="password" placeholder="senha" required="true"/>
 						<form:errors  path="senha" cssClass="control-label"/>
 					</div>
 				</s:bind>						

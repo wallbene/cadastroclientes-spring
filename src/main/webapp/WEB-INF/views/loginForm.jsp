@@ -36,11 +36,11 @@
 			
 				<div class="form-group">
 					<label>Email</label>
-					<input type="email" Class="form-control" name="username" placeholder="fulano@email.com"/>
+					<input type="email" Class="form-control" name="username" placeholder="fulano@email.com" required autofocus/>
 				</div>
 				<div class="form-group">
 					<label>Senha</label>
-					<input Class="form-control" type="password" name="password" placeholder="senha" />
+					<input Class="form-control" type="password" name="password" placeholder="senha" required />
 				</div>
 				<button class="btn btn-primary" type="submit">Logar</button>
 			</form:form>
