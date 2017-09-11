@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.bvrio.cadastrocliente.builders.UsuarioBuilder;
 import br.com.bvrio.cadastrocliente.conf.JPAConfiguration;
 import br.com.bvrio.cadastrocliente.confs.DataSourceConfiguration;
+import br.com.bvrio.cadastrocliente.exceptions.PersistenciaException;
 import br.com.bvrio.cadastrocliente.models.Role;
 import br.com.bvrio.cadastrocliente.models.Usuario;
 

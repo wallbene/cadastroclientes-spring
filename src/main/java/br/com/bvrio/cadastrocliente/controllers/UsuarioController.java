@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.bvrio.cadastrocliente.daos.PersistenciaException;
 import br.com.bvrio.cadastrocliente.daos.UsuarioDAO;
+import br.com.bvrio.cadastrocliente.exceptions.PersistenciaException;
 import br.com.bvrio.cadastrocliente.models.Usuario;
 import br.com.bvrio.cadastrocliente.validation.UsuarioValidation;
 

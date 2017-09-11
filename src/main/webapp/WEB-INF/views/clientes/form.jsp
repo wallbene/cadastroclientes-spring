@@ -19,6 +19,7 @@
 		<jsp:body>
 		<div class="container">	
 		
+		<!-- refatorar esse código -->
 		<c:if test="${not empty clienteForm}" var="vazio"/>
 		<c:choose>
 			<c:when test="${ vazio or clienteForm['new']}">
@@ -33,6 +34,8 @@
 			<form:form action="${actionPath}" method="post" commandName="clienteForm">
 			
 			<form:hidden path="id"/>
+			<form:hidden path="versao" value="${clienteForm.versao}"/>
+			
 			
 				<s:bind path="nome" >
 					<div class="form-group ${status.error ?  'has-error': ''}">

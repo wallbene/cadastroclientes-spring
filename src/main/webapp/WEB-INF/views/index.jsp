@@ -5,7 +5,7 @@
 
 <tags:pageTamplate titulo="Home">
 		
-		
+		<!-- ajustar o paramentro de logout -->
 		<c:if test="${param.logout != null}">
 	         <div class="alert alert-success">
 	               Você efetuou logout.
@@ -19,7 +19,7 @@
 	        <p class="lead text-muted">Essa aplicação foi desenvolvida exclusivamente para o processo seletivo da <strong>BVRio</strong>.
 	        						    Esse é um sistema simples desenvolvido em <strong>Java</strong>, porém aborda diversas
 	        						     ferramentas no desenvolvimento web que a torna robusta e escalável.
-	        						     Uma vesão do projeto pode ser encontrada no <a href="https://github.com/wallbene/cadastroclientes-spring"><strong>Github</strong></a>
+	        						     Uma versão do projeto pode ser encontrada no <a href="https://github.com/wallbene/cadastroclientes-spring"><strong>Github</strong></a>
 	        						 	</p>
 	        					<ul class="list-group">
 	        						<li class="list-group-item active">Tecnologias abordadas</li>
@@ -29,6 +29,7 @@
 		        					<li class="list-group-item"><strong>JPA e Hibernete</strong></li>
 		        					<li class="list-group-item"><strong>Spring Security</strong></li>
 		        					<li class="list-group-item"><strong>Tomcat</strong></li>
+									<li class="list-group-item"><strong>Maven</strong></li>		        					
 		        					<li class="list-group-item"><strong>JUnit e Spring-test</strong></li>
 		        					<li class="list-group-item"><strong>Cache com Guava</strong></li>
 		        					<li class="list-group-item"><strong>Mysql em desenvolvimento</strong></li>

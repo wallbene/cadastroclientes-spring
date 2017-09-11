@@ -3,7 +3,7 @@ package br.com.bvrio.cadastrocliente.services;
 import java.util.List;
 
 import br.com.bvrio.cadastrocliente.daos.ClienteDAO;
-import br.com.bvrio.cadastrocliente.daos.PersistenciaException;
+import br.com.bvrio.cadastrocliente.exceptions.PersistenciaException;
 import br.com.bvrio.cadastrocliente.models.Cliente;
 
 public class ClienteService {

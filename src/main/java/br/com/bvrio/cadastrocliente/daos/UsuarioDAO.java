@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.bvrio.cadastrocliente.errors.ErroDePersistencia;
+import br.com.bvrio.cadastrocliente.exceptions.PersistenciaException;
 import br.com.bvrio.cadastrocliente.models.Role;
 import br.com.bvrio.cadastrocliente.models.Usuario;
 
@@ -44,7 +44,7 @@ public class UsuarioDAO {
 	
 	public void adiciona(Usuario usuario) throws PersistenciaException {
 		if(buscaPorEmail(usuario.getEmail()) != null){
-			throw new PersistenciaException(new ErroDePersistencia(Usuario.class, "Já existe cadastro de cliente com esse email"));
+			throw new PersistenciaException("Já existe cadastro de usuário com esse email");
 		}
 		//busca a Role, associa ao usuario e persiste no banco
 		Role role = manager.find(Role.class, "ROLE_ADMIN");

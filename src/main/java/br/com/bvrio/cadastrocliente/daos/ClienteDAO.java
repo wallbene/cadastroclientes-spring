@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.bvrio.cadastrocliente.errors.ErroDePersistencia;
+import br.com.bvrio.cadastrocliente.exceptions.PersistenciaException;
 import br.com.bvrio.cadastrocliente.models.Cliente;
 
 @Repository
@@ -40,7 +40,7 @@ public class ClienteDAO {
 	}
 	public void adiciona(Cliente cliente) throws PersistenciaException {
 		if(buscaPorEmail(cliente.getEmail()) != null){
-			throw new PersistenciaException(new ErroDePersistencia(Cliente.class, "Já existe cadastro de cliente com esse email"));
+			throw new PersistenciaException("Esse email já existe no banco de dados");
 		}
 		dao.adiciona(cliente);
 	}

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +24,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.bvrio.cadastrocliente.daos.ClienteDAO;
-import br.com.bvrio.cadastrocliente.daos.PersistenciaException;
+import br.com.bvrio.cadastrocliente.exceptions.ClienteNotFoundException;
+import br.com.bvrio.cadastrocliente.exceptions.PersistenciaException;
 import br.com.bvrio.cadastrocliente.models.Cliente;
 import br.com.bvrio.cadastrocliente.models.EstadosEnum;
 import br.com.bvrio.cadastrocliente.validation.ClienteValidation;
@@ -44,14 +44,6 @@ public class ClienteController {
 	@InitBinder
 	public void InitBinder(WebDataBinder binder){
 		binder.addValidators(new ClienteValidation());
-	}
-	
-	
-	@ExceptionHandler(PersistenciaException.class)
-	public void conflict(Exception e){
-		System.out.println("Erro causado por uma tentativa de enviar Email repetido");
-		e.printStackTrace();
-		
 	}
 	
 	@RequestMapping(method=GET)
@@ -87,7 +79,7 @@ public class ClienteController {
 			dao.atualiza(cliente);
 			
 		}else{
-			//tratando em caso de email existente no banco 
+			//tratando no caso de email já existir no banco 
 			try {
 				dao.adiciona(cliente);
 				flash.addFlashAttribute("msg", "Cliente adicionado com sucesso!");		
@@ -108,6 +100,7 @@ public class ClienteController {
 	public String detalhar(@PathVariable("id") Integer id, Model model){
 		
 		Cliente cliente = dao.buscaPorId(id);
+		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
 		model.addAttribute("cliente", cliente);
 		
 		System.out.println("entrou no detalhar");
@@ -137,6 +130,7 @@ public class ClienteController {
 		System.out.println("entrou no alterar");
 		
 		Cliente cliente = dao.buscaPorId(id);
+		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
 		
 		model.addAttribute("estados", estados);
 		model.addAttribute("clienteForm", cliente);
@@ -152,6 +146,7 @@ public class ClienteController {
 		
 		//refatorar para um serviceCliente
 		Cliente cliente = dao.buscaPorId(id);
+		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
 		dao.remove(cliente);
 		
 		//escopo de flash 

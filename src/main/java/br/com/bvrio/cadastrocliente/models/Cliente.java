@@ -10,10 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity(name="cliente")
+@DynamicUpdate(value=true)
 public class Cliente {
 	
 	@Id
@@ -23,6 +26,9 @@ public class Cliente {
 	@Column(nullable=false, length=40)
 	private String nome;
 	
+	//Lock otimista
+	@Version
+	private Integer versao;
 	
 	//deve validar a unicidade da tupla
 	@Column(nullable=false, unique= true, length=40)
@@ -105,6 +111,14 @@ public class Cliente {
 	public String toString() {
 		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + ", dataNascimento=" + dataNascimento
 				+ ", endereco=" + endereco + "]";
+	}
+
+	public Integer getVersao() {
+		return versao;
+	}
+
+	public void setVersao(Integer versao) {
+		this.versao = versao;
 	}
 	
 
