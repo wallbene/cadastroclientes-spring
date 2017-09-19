@@ -1,11 +1,8 @@
 package br.com.bvrio.cadastrocliente.conf;
 
 import javax.servlet.Filter;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
-import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -40,11 +37,11 @@ public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletI
 	//por um motivo ainda não identificado o heroku não está deployando com a propriedade de "dev" mesmo com o arquivo Procfile configurado.
 	//Devido a esse motivo foi setado o valor "prod" aqui para que seja utilizado o profile de prod ao realizar o deploy no heroku,
 	//mas ATENÇÂO *quando estiver no contexto de desenvolvimento sete a propriedade abaixo como "dev".
-	@Override
+	/*@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
 		servletContext.addListener(new RequestContextListener());
 		servletContext.setInitParameter("spring.profiles.active", "dev");
-	}
+	}*/
 	
 }
