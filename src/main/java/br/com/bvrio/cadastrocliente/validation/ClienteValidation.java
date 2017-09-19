@@ -1,14 +1,19 @@
 package br.com.bvrio.cadastrocliente.validation;
 
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import br.com.bvrio.cadastrocliente.models.Cliente;
 
+@Component
 public class ClienteValidation implements Validator {
 	
 	private final String errorCode = "field.required.cliente.";
+	
+	/*@Autowired
+	private ClienteDAO dao;*/
 
 	@Override
 	public boolean supports(Class<?> Clazz) {
@@ -25,7 +30,8 @@ public class ClienteValidation implements Validator {
 		
 		
 		//valores do Endereço do cliente
-		ValidationUtils.rejectIfEmpty(errors, "endereco.endereco", errorCode+"endereco.endereco");
+		ValidationUtils.rejectIfEmpty(errors, "endereco.logradouro", errorCode+"endereco.logradouro");
+		ValidationUtils.rejectIfEmpty(errors, "endereco.bairro", errorCode+"endereco.bairro");
 		ValidationUtils.rejectIfEmpty(errors, "endereco.cidade", errorCode+"endereco.cidade");
 		ValidationUtils.rejectIfEmpty(errors, "endereco.estado", errorCode+"endereco.estado");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "endereco.cep", errorCode+"endereco.cep");
@@ -35,9 +41,15 @@ public class ClienteValidation implements Validator {
 		
 		//Não permitir clientes com idade inferior a 16
 		
-		if(cliente.getDataNascimento() != null)
-			if(cliente.getIdade() < 16)
-				errors.rejectValue("dataNascimento", "field.required.cliente.dataNascimento.idade");				
-						
+		if(cliente.getDataNascimento() != null && cliente.getIdade() < 16)
+				errors.rejectValue("dataNascimento", "field.required.cliente.dataNascimento.idade");
+		
+		/*//Não permitir emails repetidos
+		if(cliente.isNew()){
+			if(dao.buscaPorEmail(cliente.getEmail()) != null){
+				errors.rejectValue("email", "field.required.cliente.email.unico");
+			}
+			
+		}*/
 	}
 }

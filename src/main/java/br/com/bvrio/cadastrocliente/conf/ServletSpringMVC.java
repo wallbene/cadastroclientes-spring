@@ -9,7 +9,6 @@ import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-
 public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
@@ -45,7 +44,7 @@ public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletI
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
 		servletContext.addListener(new RequestContextListener());
-		servletContext.setInitParameter("spring.profiles.active", "prod");
+		servletContext.setInitParameter("spring.profiles.active", "dev");
 	}
 	
 }

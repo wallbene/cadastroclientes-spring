@@ -25,9 +25,10 @@ import com.google.common.cache.CacheBuilder;
 import br.com.bvrio.cadastrocliente.controllers.HomeController;
 import br.com.bvrio.cadastrocliente.daos.ClienteDAO;
 import br.com.bvrio.cadastrocliente.services.UsuarioService;
+import br.com.bvrio.cadastrocliente.validation.ClienteValidation;
 
 @EnableWebMvc
-@ComponentScan(basePackageClasses = { HomeController.class, ClienteDAO.class, UsuarioService.class, StringToEnumConverterFactory.class})
+@ComponentScan(basePackageClasses = { HomeController.class, ClienteDAO.class, ClienteValidation.class, UsuarioService.class, StringToEnumConverterFactory.class})
 @EnableCaching
 public class AppWebConfiguration extends WebMvcConfigurerAdapter {
 	

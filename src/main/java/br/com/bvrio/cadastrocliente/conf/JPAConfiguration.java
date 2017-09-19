@@ -45,7 +45,7 @@ public class JPAConfiguration {
 	
 	@Bean
 	@Profile("dev")
-	private DriverManagerDataSource dataSource() {
+	public DriverManagerDataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setUsername("root");
 		dataSource.setPassword("marciane");

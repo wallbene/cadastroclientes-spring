@@ -10,9 +10,11 @@
 
 <tags:pageTamplate titulo="Formulário de cadastro">
 
-		<jsp:attribute name="inputMask">
+		
+		<jsp:attribute name="scriptInputs">
 		<c:url value="/resources/js" var="resourceJs" />
 			<script src="${resourceJs}/inputmask-plugin.js" ></script>
+			<script src="${resourceJs}/buscaCep.js" ></script>
 		</jsp:attribute>
 		
 		
@@ -36,66 +38,80 @@
 			<form:hidden path="id"/>
 			<form:hidden path="versao" value="${clienteForm.versao}"/>
 			
-			
-				<s:bind path="nome" >
-					<div class="form-group ${status.error ?  'has-error': ''}">
-					 	<label>Nome</label>
-					 	<form:input path="nome" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" placeholder="Nome completo" autofocus="true" required="true" />
-						<form:errors path="nome" cssClass="control-label"/>				  
-					</div>
-				</s:bind>
-				
-				<s:bind path="email">
-					<div class="form-group ${status.error ?  'has-error': ''}">
-						<label>Email</label>
-						<form:input path="email" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" type="email" placeholder="email@exemplo.com" required="true" />
-						<form:errors path="email" cssClass="control-label"/>
-					</div>
-				</s:bind>
-				<s:bind path="dataNascimento">
-					<div class="form-group ${status.error ?  'has-error': ''}">
-					<label>Data de Nascimento</label>
-						<form:input path="dataNascimento" cssClass="form-control ${status.error ?  'form-control-error': ''}" placeholder="dd/mm/aaaa" data-mask="99/99/9999" required="true"/>
-						<form:errors  path="dataNascimento" cssClass="control-label"/>
-					</div>
-				</s:bind>
+				<fieldset>
+					<legend>Informações pessoais</legend>
+					<s:bind path="nome" >
+						<div class="form-group ${status.error ?  'has-error': ''}">
+						 	<label>Nome</label>
+						 	<form:input path="nome" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" placeholder="Nome completo" autofocus="true" required="true" />
+							<form:errors path="nome" cssClass="control-label"/>				  
+						</div>
+					</s:bind>
+					
+					<s:bind path="email">
+						<div class="form-group ${status.error ?  'has-error': ''}">
+							<label>Email</label>
+							<div class="input-group">
+								<span class="input-group-addon">@</span>
+								<form:input path="email" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" type="email" placeholder="email@exemplo.com" required="true" />
+								<form:errors path="email" cssClass="control-label"/>
+							</div>
+						</div>
+					</s:bind>
+					<s:bind path="dataNascimento">
+						<div class="form-group ${status.error ?  'has-error': ''}">
+						<label>Data de Nascimento</label>
+							<form:input path="dataNascimento" cssClass="form-control ${status.error ?  'form-control-error': ''}" placeholder="dd/mm/aaaa" data-mask="99/99/9999" required="true"/>
+							<form:errors  path="dataNascimento" cssClass="control-label"/>
+						</div>
+					</s:bind>
+				</fieldset>
 				
 				<fieldset>
 					<legend>Dados de Endereço</legend>
-					<s:bind path="endereco.endereco">
+					
+					<s:bind path="endereco.cep">
 						<div class="form-group ${status.error ?  'has-error': ''}">
-							<label>Enderenço</label>
-							<form:input path="endereco.endereco" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" placeholder="Logradouro e complemento" required="true" />
-							<form:errors path="endereco.endereco" cssClass="control-label"/>
+							<label>Cep</label>
+							<form:input id="cep" path="endereco.cep" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="9" data-mask="99999-999" placeholder="00000-000" required="true" />
+							<form:errors path="endereco.cep" class="control-label" />	
+						</div>			
+					</s:bind>
+					
+					<s:bind path="endereco.logradouro">
+						<div class="form-group ${status.error ?  'has-error': ''}">
+							<label>Logradouro</label>
+							<form:input id="logradouro" path="endereco.logradouro" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" placeholder="ex: Rua 25 de março" required="true" />
+							<form:errors path="endereco.logradouro" cssClass="control-label"/>
 						</div>
+					</s:bind>
+					
+					<s:bind path="endereco.bairro">
+						<div class="form-group ${status.error ?  'has-error': ''}">
+							<label>Bairro</label>
+							<form:input id="bairro" path="endereco.bairro" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" placeholder="Bairro" required="true" />
+							<form:errors path="endereco.bairro" cssClass="control-label"/>
+						</div>
+					</s:bind>
+								
+					<s:bind path="endereco.cidade">
+						<div class="form-group ${status.error ?  'has-error': ''}">
+							<label>Cidade</label>
+							<form:input id="localidade" path="endereco.cidade" cssClass="form-control ${status.error ?  'form-control-error': ''}" placeholder="Cidade" required="true" />
+							<form:errors path="endereco.cidade" cssClass="control-label"/>
+						</div>			
 					</s:bind>
 					
 					<s:bind path="endereco.estado">
 						<div class="form-group ${status.error ?  'has-error': ''}">
 							<label>Estado</label>
-							<form:select  path="endereco.estado" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" >
+							<form:select id="uf"  path="endereco.estado" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" >
 								<c:forEach items="${estados }" var="estado">
 						    		<form:option value="${estado }">${estado.nome }</form:option>
 						    	</c:forEach>
 						    </form:select>
 						    <form:errors path="endereco.estado" cssClass="control-label"/>
 						</div>
-					</s:bind>
-					
-					<s:bind path="endereco.cidade">
-						<div class="form-group ${status.error ?  'has-error': ''}">
-							<label>Cidade</label>
-							<form:input path="endereco.cidade" cssClass="form-control ${status.error ?  'form-control-error': ''}" placeholder="Cidade" required="true" />
-							<form:errors path="endereco.cidade" cssClass="control-label"/>
-						</div>			
-					</s:bind>
-					
-					<s:bind path="endereco.cep">
-						<div class="form-group ${status.error ?  'has-error': ''}">
-							<label>Cep</label>
-							<form:input path="endereco.cep" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="9" data-mask="99999-999" placeholder="00000-000" required="true" />
-							<form:errors path="endereco.cep" class="control-label" />	
-						</div>			
 					</s:bind>
 					
 				</fieldset>

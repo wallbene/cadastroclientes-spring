@@ -15,7 +15,8 @@ public class ClienteBuilder {
 	private static Endereco enderecoDefault = new Endereco();
 	
 	static{
-		enderecoDefault.setEndereco("Rua Teste");
+		enderecoDefault.setLogradouro("Rua Teste");
+		enderecoDefault.setBairro("Vila São João");
 		enderecoDefault.setCidade("Rio de Janeiro");
 		enderecoDefault.setEstado(EstadosEnum.RJ);
 		enderecoDefault.setCep("25570210");
@@ -54,7 +55,7 @@ public class ClienteBuilder {
 	
 	public ClienteBuilder more(int n){
 		Cliente base = this.clientes.get(0);
-		for(int i = 0; i <= 2;i++ ){
+		for(int i = 1; i <= n;i++ ){
 			this.clientes.add(create("usuario"+i, base.getEmail()+i, base.getDataNascimento(), null));
 		}
 		return this;

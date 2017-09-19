@@ -8,26 +8,25 @@ import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class ClienteTest {
+
 	
 	@Test
-	public void umClienteDeveTerIdadeSuperiorA16(){
+	public void devecalcularIdade(){
 		
-		Calendar idade = new Calendar.Builder().setDate(1990, Calendar.AUGUST, 19).build();
-		
+		Calendar idade = new Calendar.Builder().setDate(2001, Calendar.SEPTEMBER, 15).build();	
 		Date aux = idade.getTime();
-		
 		Calendar data = Calendar.getInstance();
-		
 		data.setTime(aux);
 		
 		Cliente cliente = new Cliente();
-		
 		cliente.setDataNascimento(idade);
 		
-		assertEquals(27, cliente.getIdade());
+		assertEquals(16, cliente.getIdade());
 		
-		assertEquals(data, cliente.getDataNascimento());
-	}
+		//Data deve permanecer imutável após o calculo da idade.
+		assertEquals(data.getTime(), cliente.getDataNascimento().getTime());
+	}	
+	
 	
 	@Test
 	public void deveConferirOValorCriptografado(){

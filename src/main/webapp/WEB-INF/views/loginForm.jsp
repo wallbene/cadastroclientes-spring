@@ -28,8 +28,9 @@
 				<c:if test="${param.error != null}">
 	                <div class="alert alert-danger">
 	                       <c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
-	                       	<strong>Falha ao fazer Login</strong>
-	                       	<c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
+	                       	<strong>Falha ao efetuar Login</strong>
+	                       	Usuário ou senha incorretos.
+	                       	<!-- <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" /> -->
 	                       </c:if>
 	                </div>
 	            </c:if>
@@ -44,6 +45,6 @@
 				</div>
 				<button class="btn btn-primary" type="submit">Logar</button>
 			</form:form>
-		</div>
+		</div><!-- fim container -->
 	</body>
 </html>

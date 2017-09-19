@@ -5,38 +5,39 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import br.com.bvrio.cadastrocliente.models.EstadosEnum;
-
 @Embeddable
 public class Endereco {
 	
 	@Column(nullable=false, length=40)
-	private String endereco;
+	private String logradouro;
+	
+	@Column(nullable=false, length=40)
+	private String bairro;
+	
+	@Column(nullable=false, length=20)
+	private String cidade;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false)
 	private EstadosEnum estado;
 	
-	@Column(nullable=false, length=20)
-	private String cidade;
-	
 	@Column(nullable=false, length=9)
 	private String cep;
 
-	public String getEndereco() {
-		return endereco;
+	public String getLogradouro() {
+		return logradouro;
 	}
 
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
 	}
 
-	public EstadosEnum getEstado() {
-		return estado;
+	public String getBairro() {
+		return bairro;
 	}
 
-	public void setEstado(EstadosEnum estado) {
-		this.estado = estado;
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
 	}
 
 	public String getCidade() {
@@ -45,6 +46,14 @@ public class Endereco {
 
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
+	}
+
+	public EstadosEnum getEstado() {
+		return estado;
+	}
+
+	public void setEstado(EstadosEnum estado) {
+		this.estado = estado;
 	}
 
 	public String getCep() {
@@ -57,6 +66,8 @@ public class Endereco {
 
 	@Override
 	public String toString() {
-		return "Endereco [endereco=" + endereco + ", estado=" + estado + ", cidade=" + cidade + ", cep=" + cep + "]";
+		return "Endereco [logradouro=" + logradouro + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado
+				+ ", cep=" + cep + "]";
 	}
+	
 }

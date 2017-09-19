@@ -28,6 +28,7 @@ public class ExceptionHandlerController {
 		exception.printStackTrace();
 		ModelAndView view = new ModelAndView("error");
 		view.addObject("exception", exception.getMessage());
+		System.out.println("returnando a página de erro");
 		return view;
 	}
 	

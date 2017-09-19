@@ -13,7 +13,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.bvrio.cadastrocliente.daos.ClienteDAO;
@@ -46,113 +46,116 @@ public class ClienteController {
 		binder.addValidators(new ClienteValidation());
 	}
 	
-	@RequestMapping(method=GET)
 	@Cacheable(value="listaClientes")
-	public String listar(Model model){
+	@RequestMapping(method=GET)
+	public ModelAndView listar(){
 		
 		List<Cliente> clientes = dao.listaTodos();
+		ModelAndView view = new ModelAndView("clientes/lista");
+		view.addObject("clientes", clientes);
 		
-		model.addAttribute("clientes", clientes);
-		
-		return "clientes/lista";	
+		return view;	
 	}
 	
 	//Redirect after POST
 	// grava ou atualiza cliente
 	@CacheEvict(value="listaClientes", allEntries=true)
 	@RequestMapping(method=POST)
-	public String gravaOuAtualiza(@ModelAttribute("clienteForm") @Valid Cliente cliente, BindingResult result, 
-			Model model, final RedirectAttributes flash){
+	public ModelAndView gravaOuAtualiza(@ModelAttribute("clienteForm") @Valid Cliente cliente, BindingResult result, final RedirectAttributes flash){
 		
 		//caso haja erros de validação dos dados do formulário
 		if(result.hasErrors()){
-			model.addAttribute("estados", EstadosEnum.values());
-			return "clientes/form";
+			ModelAndView view = new ModelAndView("clientes/form");
+			view.addObject("estados", estados);
+			return view;
 		}
 		
-		//Se usuário já existe atualiza
+		//Se usuário já existir, então atualiza
 		
-		if(cliente.getId() != null){
-			
-			flash.addFlashAttribute("css", "success");
-			flash.addFlashAttribute("msg", "Cliente alterado com sucesso!");
-			dao.atualiza(cliente);
-			
-		}else{
-			//tratando no caso de email já existir no banco 
+		if(cliente.isNew()){
 			try {
 				dao.adiciona(cliente);
-				flash.addFlashAttribute("msg", "Cliente adicionado com sucesso!");		
-				flash.addFlashAttribute("css", "success");
-			}catch (PersistenciaException e) {	
-				result.rejectValue("email", "field.required.cliente.email.unico");
-				return "clientes/form";
-			}			
+				flash.addFlashAttribute("msg", "Cliente adicionado com sucesso!")
+					 .addFlashAttribute("css", "success");						
+			}catch (PersistenciaException e) {
 			
+				result.rejectValue("email", "field.required.cliente.email.unico");
+			
+				ModelAndView view = new ModelAndView("clientes/form");
+				view.addObject("estados", this.estados);
+				return view;
+		}				
+		}else{
+			//tratando no caso de email já existir no banco(somente na ação de adicionar )
+				dao.atualiza(cliente);
+				flash.addFlashAttribute("msg", "Cliente alterado com sucesso!")
+				.addFlashAttribute("css", "success");
+				
 		}
-		
-		
-		return "redirect:/clientes"; 
-		
+		return new ModelAndView("redirect:/clientes"); 
 	}
 	//exibe detalhes de um cliente
 	@RequestMapping("/{id}")
-	public String detalhar(@PathVariable("id") Integer id, Model model){
+	public ModelAndView detalhar(@PathVariable("id") Integer id){
 		
 		Cliente cliente = dao.buscaPorId(id);
 		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
-		model.addAttribute("cliente", cliente);
+		
+		ModelAndView view = new ModelAndView("clientes/detalhe");
+		view.addObject("cliente", cliente);
 		
 		System.out.println("entrou no detalhar");
-		
-		return "clientes/detalhe";
+		return view;
 		
 	}
 	
 	
 	// mostra o formulário de adicionar
 	@RequestMapping(value="/adicionar", method=GET)
-	public String formAdicionar(Model model){
+	public ModelAndView formAdicionar(){
 		System.out.println("metodo form");
 		
 		Cliente cliente = new Cliente();
 		
-		model.addAttribute("estados", estados);
-		model.addAttribute("clienteForm", cliente);
+		ModelAndView view = new ModelAndView("clientes/form");
+		view.addObject("estados", estados)
+			.addObject("clienteForm", cliente);
 		
-		
-		return "clientes/form";
+		return view;
 	}
 	
 	// mostra o formulário de alterar
 	@RequestMapping(value="/{id}/alterar", method=GET)
-	public String formAlterar(@PathVariable("id") Integer id, Model model){
+	public ModelAndView formAlterar(@PathVariable("id") Integer id){
 		System.out.println("entrou no alterar");
 		
 		Cliente cliente = dao.buscaPorId(id);
 		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
 		
-		model.addAttribute("estados", estados);
-		model.addAttribute("clienteForm", cliente);
+		ModelAndView view = new ModelAndView("clientes/form");
+		view.addObject("estados", estados)
+			.addObject("clienteForm", cliente);
 		
-		return "clientes/form";
+		return view;
 	}
 	
 	//Redirect after POST
 	//remove cliente
 	@CacheEvict(value="listaClientes", allEntries=true)
 	@RequestMapping(value="/{id}/remover", method = POST)
-	public String remover(@PathVariable("id") Integer id, Model model, HttpServletResponse response, RedirectAttributes flash){
+	public ModelAndView remover(@PathVariable("id") Integer id, HttpServletResponse response, RedirectAttributes flash){
 		
 		//refatorar para um serviceCliente
 		Cliente cliente = dao.buscaPorId(id);
 		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
+		
 		dao.remove(cliente);
+		response.setStatus(200);
 		
 		//escopo de flash 
-		flash.addFlashAttribute("msg", "Cliente removido com Sucesso!");
-		flash.addFlashAttribute("css", "success");
-		
-		return "redirect:/clientes";  
+		flash.addFlashAttribute("msg", "Cliente removido com Sucesso!")
+			 .addFlashAttribute("css", "success");
+		  
+		return new ModelAndView("redirect:/clientes");
 	}
 }

@@ -30,11 +30,10 @@ public class Cliente {
 	@Version
 	private Integer versao;
 	
-	//deve validar a unicidade da tupla
 	@Column(nullable=false, unique= true, length=40)
 	private String email;
 	
-	//bean validation : (!data < 16) 
+	//(idade >= 16) 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat
 	private Calendar dataNascimento;
@@ -42,7 +41,7 @@ public class Cliente {
 	private Endereco endereco;
 	
 	public boolean isNew(){
-		return (this.id == null);
+		return this.id == null;
 	}
 	
 	public void setId(Integer id) {
