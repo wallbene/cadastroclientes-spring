@@ -33,10 +33,7 @@ public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletI
 		return new Filter[] {encodingFilter, new OpenEntityManagerInViewFilter()};
 	}
 	
-	//Esse bloco deverá ser comitido em contexto de produção para que o profile de "prod" seja visualizado;
-	//por um motivo ainda não identificado o heroku não está deployando com a propriedade de "dev" mesmo com o arquivo Procfile configurado.
-	//Devido a esse motivo foi setado o valor "prod" aqui para que seja utilizado o profile de prod ao realizar o deploy no heroku,
-	//mas ATENÇÂO *quando estiver no contexto de desenvolvimento sete a propriedade abaixo como "dev".
+	//Esse bloco deverá ser omitido em contexto de produção para que a propriedade de "prod" seja setado no deploy do heroku;
 	/*@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
