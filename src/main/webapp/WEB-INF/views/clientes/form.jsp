@@ -21,10 +21,8 @@
 		<jsp:body>
 		<div class="container">	
 		
-		<!-- refatorar esse código -->
-		<c:if test="${not empty clienteForm}" var="vazio"/>
 		<c:choose>
-			<c:when test="${ vazio or clienteForm['new']}">
+			<c:when test="${clienteForm['new']}">
 				<h1>Novo Usuário</h1>
 			</c:when>
 			<c:otherwise>
