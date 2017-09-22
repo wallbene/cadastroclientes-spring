@@ -9,20 +9,22 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class DataSourceConfigurationTest {
-
-	@Bean
+	
+	
 	@Profile("test")
-	public DataSource dataSource() {
+	@Bean
+	public DataSource dataSource(){
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setUrl("jdbc:mysql://localhost:3306/cadastrocliente_test");
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUsername("root");
-		dataSource.setPassword("marciane");
+		dataSource.setPassword("");
+	    
 		return dataSource;
 	}
 
-	@Bean
 	@Profile("test")
+	@Bean
 	public Properties additionalProperties() {
 		Properties props = new Properties();
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");

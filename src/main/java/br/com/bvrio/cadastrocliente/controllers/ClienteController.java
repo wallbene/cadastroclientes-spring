@@ -3,6 +3,7 @@ package br.com.bvrio.cadastrocliente.controllers;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +41,8 @@ public class ClienteController {
 	
 	EstadosEnum[] estados = EstadosEnum.values();
 	
+	/*@Autowired
+	private DataSource dataSource;*/
 	
 	@InitBinder
 	public void InitBinder(WebDataBinder binder){
@@ -57,7 +60,7 @@ public class ClienteController {
 		return view;	
 	}
 	
-	//Redirect after POST
+	
 	// grava ou atualiza cliente
 	@CacheEvict(value="listaClientes", allEntries=true)
 	@RequestMapping(method=POST)
@@ -92,11 +95,11 @@ public class ClienteController {
 				.addFlashAttribute("css", "success");
 				
 		}
-		return new ModelAndView("redirect:/clientes"); 
+		return new ModelAndView("redirect:/clientes");//Redirect after POST 
 	}
 	//exibe detalhes de um cliente
 	@RequestMapping("/{id}")
-	public ModelAndView detalhar(@PathVariable("id") Integer id){
+	public ModelAndView detalhar(@PathVariable("id") Integer id) throws InterruptedException, SQLException{
 		
 		Cliente cliente = dao.buscaPorId(id);
 		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
@@ -105,6 +108,18 @@ public class ClienteController {
 		view.addObject("cliente", cliente);
 		
 		System.out.println("entrou no detalhar");
+		
+		
+		/*
+		 * teste manual do pool de conexão
+		 * 
+		 * ComboPooledDataSource data =  (ComboPooledDataSource) dataSource;
+		System.out.println("existentes :"+ data.getNumConnectionsDefaultUser());
+		System.out.println("Ocupadas: "+data.getNumBusyConnectionsDefaultUser());
+		System.out.println("Ociosas: "+data.getNumIdleConnectionsDefaultUser());		
+		System.out.println();
+		Thread.sleep(20000);*/
+		
 		return view;
 		
 	}
@@ -126,10 +141,11 @@ public class ClienteController {
 	
 	// mostra o formulário de alterar
 	@RequestMapping(value="/{id}/alterar", method=GET)
-	public ModelAndView formAlterar(@PathVariable("id") Integer id){
+	public ModelAndView formAlterar(@PathVariable("id") Integer id) throws SQLException{
 		System.out.println("entrou no alterar");
 		
 		Cliente cliente = dao.buscaPorId(id);
+		
 		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
 		
 		ModelAndView view = new ModelAndView("clientes/form");
@@ -139,7 +155,7 @@ public class ClienteController {
 		return view;
 	}
 	
-	//Redirect after POST
+	
 	//remove cliente
 	@CacheEvict(value="listaClientes", allEntries=true)
 	@RequestMapping(value="/{id}/remover", method = POST)
@@ -156,6 +172,6 @@ public class ClienteController {
 		flash.addFlashAttribute("msg", "Cliente removido com Sucesso!")
 			 .addFlashAttribute("css", "success");
 		  
-		return new ModelAndView("redirect:/clientes");
+		return new ModelAndView("redirect:/clientes");//Redirect after POST
 	}
 }

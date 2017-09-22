@@ -1,8 +1,10 @@
 package br.com.bvrio.cadastrocliente.conf;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
-import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -30,15 +32,15 @@ public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletI
 	protected Filter[] getServletFilters() {
 		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
 		encodingFilter.setEncoding("UTF-8");
-		return new Filter[] {encodingFilter, new OpenEntityManagerInViewFilter()};
+		return new Filter[] {encodingFilter};
 	}
 	
 	//Esse bloco deverá ser omitido em contexto de produção para que a propriedade de "prod" seja setado no deploy do heroku;
-	/*@Override
+	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
 		servletContext.addListener(new RequestContextListener());
 		servletContext.setInitParameter("spring.profiles.active", "dev");
-	}*/
+	}
 	
 }
