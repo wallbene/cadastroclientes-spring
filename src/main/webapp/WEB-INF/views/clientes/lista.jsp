@@ -52,14 +52,14 @@
 			</div>
 		</c:if>
 			
-		    <h1>Lista de Clientes</h1>
+		    <h1><fmt:message key="titulo.principal.lista.cliente"/></h1>
 		    <div class="table-responsive">
 			    <table class="table table-condensed table-triped table-hover">
 			    <thead>
 			        <tr>
-			            <th>Nome</th>
-			            <th>Email</th>
-			            <th>Data de Nascimento</th>
+			            <th><fmt:message key="label.nome"/></th>
+			            <th><fmt:message key="label.email"/></th>
+			            <th><fmt:message key="label.dataNascimento"/></th>
 			            <th></th>
 			            <th></th>
 			        </tr>
@@ -68,22 +68,23 @@
 			        <c:forEach items="${clientes}" var="cliente">
 			            <tr id="${cliente.id}">
 			            	<c:url value="/clientes/${cliente.id}" var="detalhePath" />
-			                <td><a title="Exibir mais detalhes " href="${detalhePath}">${cliente.nome}</a></td>
+			               	<fmt:message key="field.title.mostrar.detalhes" var="titleDetalhes"/>
+			                <td><a title="${titleDetalhes } " href="${detalhePath}">${cliente.nome}</a></td>
 			                <td>${cliente.email}</td>
 			                <td><fmt:formatDate value="${cliente.dataNascimento.time}" pattern="dd/MM/yyyy"/></td>
 			                              
 			                <!-- caminhos -->
 			                <c:url value="/clientes/${cliente.id}/alterar" var="alterarPath" />
 			                <c:url value="/clientes/${cliente.id}/remover" var="removerPath" />
-			               	                              
+			                <fmt:message key="field.title.alterar" var="titleAlterar"/>
 			                <td>
-			                	<button class="btn btn-primary" onclick="location.href='${alterarPath}'" title="Alterar ${cliente.nome }">
+			                	<button class="btn btn-primary" onclick="location.href='${alterarPath}'" title="${titleAlterar } ${cliente.nome }">
 			                		<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
 								</button>
 			                </td>
 			                <td>
-			                
-			                <button id="removerCliente" class="btn btn-danger" onclick="removeCliente('${removerPath}', '${cliente.id }')" title="Remover ${cliente.nome }">
+			                <fmt:message key="field.title.remover" var="titleRemover"/>
+			                <button id="removerCliente" class="btn btn-danger" onclick="removeCliente('${removerPath}', '${cliente.id }')" title="${titleRemover } ${cliente.nome }">
 							  		  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>ajax
 							 </button>
 			                

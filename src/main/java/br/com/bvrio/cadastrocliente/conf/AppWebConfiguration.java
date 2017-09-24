@@ -17,10 +17,13 @@ import org.springframework.format.datetime.DateFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.google.common.cache.CacheBuilder;
@@ -80,8 +83,14 @@ public class AppWebConfiguration extends WebMvcConfigurerAdapter {
 		return new OpenEntityManagerInViewInterceptor();
 	}
 	
+	@Bean
+	public LocaleResolver localeResolver(){
+		return new CookieLocaleResolver();
+	}
+	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new LocaleChangeInterceptor());	
 		registry.addWebRequestInterceptor(getOpenEntityManagerInViewInterceptor());
 	}
 	

@@ -72,7 +72,6 @@ public class ClienteController {
 			view.addObject("estados", estados);
 			return view;
 		}
-		
 		//Se usuário já existir, então atualiza
 		
 		if(cliente.isNew()){

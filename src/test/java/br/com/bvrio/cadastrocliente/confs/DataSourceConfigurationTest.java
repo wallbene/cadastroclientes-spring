@@ -10,7 +10,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class DataSourceConfigurationTest {
 	
-	
 	@Profile("test")
 	@Bean
 	public DataSource dataSource(){
@@ -19,7 +18,7 @@ public class DataSourceConfigurationTest {
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUsername("root");
 		dataSource.setPassword("");
-	    
+	  
 		return dataSource;
 	}
 

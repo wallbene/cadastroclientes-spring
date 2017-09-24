@@ -1,6 +1,7 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
     
     <footer>
     	<div class="container">
-    		<p>Desenvolvido por Wallace Benevides ©</p>
+    		<p><fmt:message key="rodape.descricao"/> Wallace Benevides ©</p>
     	</div>
     </footer>

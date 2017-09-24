@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 
@@ -15,16 +16,13 @@
 		
 		<section class="jumbotron text-center">
 	      <div class="container">
-	        <h1 class="jumbotron-heading">Sistema de Cadastro de Usuários</h1>
-	        <p class="lead text-muted">Essa aplicação foi desenvolvida exclusivamente para o processo seletivo da <strong>BVRio</strong>.
-	        						    Esse é um sistema simples desenvolvido em <strong>Java</strong>, porém aborda diversas
-	        						     ferramentas no desenvolvimento web que a torna robusta e escalável.
-	        						     Uma versão do projeto pode ser encontrada no <a href="https://github.com/wallbene/cadastroclientes-spring"><strong>Github</strong></a>
+	        <h1 class="jumbotron-heading"><fmt:message key="titulo.principal"/></h1>
+	        <p class="lead text-muted"><fmt:message key="descricao.principal"/>
 	        						 	</p>
 	        					<ul class="list-group">
-	        						<li class="list-group-item active">Tecnologias abordadas</li>
+	        						<li class="list-group-item active"><fmt:message key="titulo.tecnologia"/></li>
 		        					<li class="list-group-item"><strong>Spring MVC</strong></li>
-		        					<li class="list-group-item"><strong>JSP, Tamplates</strong></li>
+		        					<li class="list-group-item"><strong>JSP, Templates</strong></li>
 		        					<li class="list-group-item"><strong>JSTL</strong></li>
 		        					<li class="list-group-item"><strong>JPA e Hibernete</strong></li>
 		        					<li class="list-group-item"><strong>Spring Security</strong></li>
@@ -40,8 +38,8 @@
 	        <p>
 	        
 	          <security:authorize access="!isAuthenticated()">
-		          <a href='<c:url value="/login" />' class="btn btn-primary">Efetuar Login</a> ou
-		          <a href='<c:url value="/usuarios/adicionar" />' class="btn btn-secondary">Criar um novo cadastro</a>
+		          <a href='<c:url value="/login" />' class="btn btn-primary"><fmt:message key="navegacao.login"/></a> 
+		          <a href='<c:url value="/usuarios/adicionar" />' class="btn btn-secondary"><fmt:message key="navegacao.nova.conta"/></a>
 	          </security:authorize>
 	        </p>
 	      </div>

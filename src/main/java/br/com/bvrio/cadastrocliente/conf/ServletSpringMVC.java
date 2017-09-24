@@ -35,7 +35,7 @@ public class ServletSpringMVC extends AbstractAnnotationConfigDispatcherServletI
 		return new Filter[] {encodingFilter};
 	}
 	
-	//Esse bloco deverá ser omitido em contexto de produção para que a propriedade de "prod" seja setado no deploy do heroku;
+	//Esse bloco deverá ser omitido em contexto de produção para que o DataSource com profile "prod" seja setado no deploy do heroku;
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);

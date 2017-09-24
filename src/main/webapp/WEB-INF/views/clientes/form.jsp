@@ -23,10 +23,10 @@
 		
 		<c:choose>
 			<c:when test="${clienteForm['new']}">
-				<h1>Novo Usuário</h1>
+				<h1><fmt:message key="titulo.cadastrar"/></h1>
 			</c:when>
 			<c:otherwise>
-				<h1>Alterar Usuário</h1>
+				<h1><fmt:message key="titulo.alterar"/></h1>
 			</c:otherwise>
 		</c:choose>
 		
@@ -37,72 +37,72 @@
 			<form:hidden path="versao" value="${clienteForm.versao}"/>
 			
 				<fieldset>
-					<legend>Informações pessoais</legend>
+					<legend><fmt:message key="fieldSet.Legend.pessoal"/></legend>
 					<s:bind path="nome" >
 						<div class="form-group ${status.error ?  'has-error': ''}">
-						 	<label>Nome</label>
-						 	<form:input path="nome" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" placeholder="Nome completo" autofocus="true" required="true" />
+						 	<label><fmt:message key="label.nome"/></label>
+						 	<form:input path="nome" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" autofocus="true" />
 							<form:errors path="nome" cssClass="control-label"/>				  
 						</div>
 					</s:bind>
 					
 					<s:bind path="email">
 						<div class="form-group ${status.error ?  'has-error': ''}">
-							<label>Email</label>
+							<label><fmt:message key="label.email"/></label>
 							<div class="input-group">
 								<span class="input-group-addon">@</span>
-								<form:input path="email" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" type="email" placeholder="email@exemplo.com" required="true" />
-								<form:errors path="email" cssClass="control-label"/>
+								<form:input path="email" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" type="email" />
 							</div>
+								<form:errors path="email" cssClass="control-label"/>
 						</div>
 					</s:bind>
 					<s:bind path="dataNascimento">
 						<div class="form-group ${status.error ?  'has-error': ''}">
-						<label>Data de Nascimento</label>
-							<form:input path="dataNascimento" cssClass="form-control ${status.error ?  'form-control-error': ''}" placeholder="dd/mm/aaaa" data-mask="99/99/9999" required="true"/>
+						<label><fmt:message key="label.dataNascimento"/></label>
+							<form:input path="dataNascimento" cssClass="form-control ${status.error ?  'form-control-error': ''}" placeholder="dd/mm/aaaa" data-mask="99/99/9999"/>
 							<form:errors  path="dataNascimento" cssClass="control-label"/>
 						</div>
 					</s:bind>
 				</fieldset>
 				
 				<fieldset>
-					<legend>Dados de Endereço</legend>
+					<legend><fmt:message key="fieldSet.Legend.endereco"/></legend>
 					
 					<s:bind path="endereco.cep">
 						<div class="form-group ${status.error ?  'has-error': ''}">
-							<label>Cep</label>
-							<form:input id="cep" path="endereco.cep" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="9" data-mask="99999-999" placeholder="00000-000" required="true" />
+							<label><fmt:message key="label.endereco.cep"/></label>
+							<form:input id="cep" path="endereco.cep" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="9" data-mask="99999-999" placeholder="00000-000" />
 							<form:errors path="endereco.cep" class="control-label" />	
 						</div>			
 					</s:bind>
 					
 					<s:bind path="endereco.logradouro">
 						<div class="form-group ${status.error ?  'has-error': ''}">
-							<label>Logradouro</label>
-							<form:input id="logradouro" path="endereco.logradouro" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" placeholder="ex: Rua 25 de março" required="true" />
+							<label><fmt:message key="label.endereco.logradouro"/></label>
+							<form:input id="logradouro" path="endereco.logradouro" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" />
 							<form:errors path="endereco.logradouro" cssClass="control-label"/>
 						</div>
 					</s:bind>
 					
 					<s:bind path="endereco.bairro">
 						<div class="form-group ${status.error ?  'has-error': ''}">
-							<label>Bairro</label>
-							<form:input id="bairro" path="endereco.bairro" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" placeholder="Bairro" required="true" />
+							<label><fmt:message key="label.endereco.bairro"/></label>
+							<form:input id="bairro" path="endereco.bairro" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" />
 							<form:errors path="endereco.bairro" cssClass="control-label"/>
 						</div>
 					</s:bind>
 								
 					<s:bind path="endereco.cidade">
 						<div class="form-group ${status.error ?  'has-error': ''}">
-							<label>Cidade</label>
-							<form:input id="localidade" path="endereco.cidade" cssClass="form-control ${status.error ?  'form-control-error': ''}" placeholder="Cidade" required="true" />
+							<label><fmt:message key="label.endereco.cidade"/></label>
+							<form:input id="localidade" path="endereco.cidade" cssClass="form-control ${status.error ?  'form-control-error': ''}" />
 							<form:errors path="endereco.cidade" cssClass="control-label"/>
 						</div>			
 					</s:bind>
 					
 					<s:bind path="endereco.estado">
 						<div class="form-group ${status.error ?  'has-error': ''}">
-							<label>Estado</label>
+							<label><fmt:message key="label.endereco.estado"/></label>
 							<form:select id="uf"  path="endereco.estado" cssClass="form-control ${status.error ?  'form-control-error': ''}" maxlength="40" >
 								<c:forEach items="${estados }" var="estado">
 						    		<form:option value="${estado }">${estado.nome }</form:option>
@@ -113,7 +113,7 @@
 					</s:bind>
 					
 				</fieldset>
-				<button class="btn btn-primary" type="submit">Salvar</button>
+				<button class="btn btn-primary" type="submit"><fmt:message key="field.button.salvar"/></button>
 				
 			</form:form>
 		</div><!-- class="container" -->
