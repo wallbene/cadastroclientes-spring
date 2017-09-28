@@ -4,7 +4,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -14,6 +13,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -21,96 +21,92 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.bvrio.cadastrocliente.daos.ClienteDAO;
 import br.com.bvrio.cadastrocliente.exceptions.ClienteNotFoundException;
-import br.com.bvrio.cadastrocliente.exceptions.PersistenciaException;
 import br.com.bvrio.cadastrocliente.models.Cliente;
 import br.com.bvrio.cadastrocliente.models.EstadosEnum;
-import br.com.bvrio.cadastrocliente.validation.ClienteValidation;
+import br.com.bvrio.cadastrocliente.services.ClienteService;
+import br.com.bvrio.cadastrocliente.validations.ClienteValidation;
 
 @Controller
 @RequestMapping("/clientes")
 @Scope(value=WebApplicationContext.SCOPE_REQUEST)
 public class ClienteController {
 	
-	@Autowired
-	private ClienteDAO dao;
-	
-	EstadosEnum[] estados = EstadosEnum.values();
+	private static final String CSS__NAME = "css";
+	private static final String CSS_VALUE_SUCCESS = "success";
+	private static final String MESSAGE_NAME = "msg";
+	//messages.properties
+	private static final String CLIENTE_ADD_SUCCESS = "cliente.adicionado.sucesso";
+	private static final String CLIENTE_ALTER_SUCCESS = "cliente.alterado.sucesso";
+	private static final String CLIENTE_REMOVE_SUCCESS = "cliente.alterado.sucesso";
 	
 	/*@Autowired
 	private DataSource dataSource;*/
 	
+	@Autowired
+	private ClienteService clienteService;
+	
+	@Autowired
+	private ClienteValidation clienteValidation;
+	
+	EstadosEnum[] estados = EstadosEnum.values();
+	
 	@InitBinder
 	public void InitBinder(WebDataBinder binder){
-		binder.addValidators(new ClienteValidation());
+		binder.addValidators(clienteValidation);
 	}
 	
 	@Cacheable(value="listaClientes")
 	@RequestMapping(method=GET)
-	public ModelAndView listar(){
+	public String listar(Model model){
 		
-		List<Cliente> clientes = dao.listaTodos();
-		ModelAndView view = new ModelAndView("clientes/lista");
-		view.addObject("clientes", clientes);
-		
-		return view;	
+		model.addAttribute("clientes", clienteService.listaTodos());
+		return "clientes/lista";	
 	}
 	
 	
 	// grava ou atualiza cliente
 	@CacheEvict(value="listaClientes", allEntries=true)
 	@RequestMapping(method=POST)
-	public ModelAndView gravaOuAtualiza(@ModelAttribute("clienteForm") @Valid Cliente cliente, BindingResult result, final RedirectAttributes flash){
+	public String gravaOuAtualiza(@ModelAttribute("clienteForm") @Valid Cliente cliente, BindingResult result 
+			,Model model, final RedirectAttributes flash){
 		
 		//caso haja erros de validação dos dados do formulário
 		if(result.hasErrors()){
-			ModelAndView view = new ModelAndView("clientes/form");
-			view.addObject("estados", estados);
-			return view;
+			model.addAttribute("estados", estados);
+			return "clientes/form";
 		}
 		//Se usuário já existir, então atualiza
 		
-		if(cliente.isNew()){
-			try {
-				dao.adiciona(cliente);
-				flash.addFlashAttribute("msg", "Cliente adicionado com sucesso!")
-					 .addFlashAttribute("css", "success");						
-			}catch (PersistenciaException e) {
-			
-				result.rejectValue("email", "field.required.cliente.email.unico");
-			
-				ModelAndView view = new ModelAndView("clientes/form");
-				view.addObject("estados", this.estados);
-				return view;
-		}				
-		}else{
-			//tratando no caso de email já existir no banco(somente na ação de adicionar )
-				dao.atualiza(cliente);
-				flash.addFlashAttribute("msg", "Cliente alterado com sucesso!")
-				.addFlashAttribute("css", "success");
-				
-		}
-		return new ModelAndView("redirect:/clientes");//Redirect after POST 
+		if(cliente.isNew())
+			flash.addFlashAttribute(MESSAGE_NAME, CLIENTE_ADD_SUCCESS);			
+		else
+			flash.addFlashAttribute(MESSAGE_NAME, CLIENTE_ALTER_SUCCESS);
+		
+		flash.addFlashAttribute(CSS__NAME, CSS_VALUE_SUCCESS);
+		
+		clienteService.salva(cliente);
+					
+		return "redirect:/clientes";//Redirect after POST 
 	}
+	
 	//exibe detalhes de um cliente
 	@RequestMapping("/{id}")
-	public ModelAndView detalhar(@PathVariable("id") Integer id) throws InterruptedException, SQLException{
-		
-		Cliente cliente = dao.buscaPorId(id);
+	public String detalhar(@PathVariable("id") Integer id, Model model){
+		Cliente cliente = clienteService.buscaPorId(id);
 		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
 		
-		ModelAndView view = new ModelAndView("clientes/detalhe");
-		view.addObject("cliente", cliente);
+		model.addAttribute("cliente", cliente);
 		
 		System.out.println("entrou no detalhar");
 		
-		
 		/*
 		 * teste manual do pool de conexão
+		 * 
+		 * descomente esse bloco, descomente a variável membro que referencia um DataSource, 
+		 * trate as exception e depois importe as classes com  Ctrl + shift + O; 
 		 * 
 		 * ComboPooledDataSource data =  (ComboPooledDataSource) dataSource;
 		System.out.println("existentes :"+ data.getNumConnectionsDefaultUser());
@@ -119,58 +115,53 @@ public class ClienteController {
 		System.out.println();
 		Thread.sleep(20000);*/
 		
-		return view;
+		return "clientes/detalhe";
 		
 	}
 	
-	
-	// mostra o formulário de adicionar
+	// exibe o formulário de adicionar
 	@RequestMapping(value="/adicionar", method=GET)
-	public ModelAndView formAdicionar(){
+	public String formAdicionar(Model model){
 		System.out.println("metodo form");
-		
 		Cliente cliente = new Cliente();
 		
-		ModelAndView view = new ModelAndView("clientes/form");
-		view.addObject("estados", estados)
-			.addObject("clienteForm", cliente);
+		model.addAttribute("estados", estados)
+			.addAttribute("clienteForm", cliente);
 		
-		return view;
+		return "clientes/form";
 	}
 	
-	// mostra o formulário de alterar
+	// exibe o formulário de alterar
 	@RequestMapping(value="/{id}/alterar", method=GET)
-	public ModelAndView formAlterar(@PathVariable("id") Integer id) throws SQLException{
+	public String formAlterar(@PathVariable("id") Integer id, Model model) throws SQLException{
 		System.out.println("entrou no alterar");
 		
-		Cliente cliente = dao.buscaPorId(id);
+		Cliente cliente = clienteService.buscaPorId(id);
 		
 		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
 		
-		ModelAndView view = new ModelAndView("clientes/form");
-		view.addObject("estados", estados)
-			.addObject("clienteForm", cliente);
+		model.addAttribute("estados", estados)
+			.addAttribute("clienteForm", cliente);
 		
-		return view;
+		return "clientes/form";
 	}
 	
 	
 	//remove cliente
 	@CacheEvict(value="listaClientes", allEntries=true)
 	@RequestMapping(value="/{id}/remover", method = POST)
-	public ModelAndView remover(@PathVariable("id") Integer id, HttpServletResponse response, RedirectAttributes flash){
+	public String remover(@PathVariable("id") Integer id, HttpServletResponse response, RedirectAttributes flash){
 		
-		//refatorar para um serviceCliente
-		Cliente cliente = dao.buscaPorId(id);
+		Cliente cliente = clienteService.buscaPorId(id);
 		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
 		
-		dao.remove(cliente);
+		clienteService.remove(cliente);
 		response.setStatus(200);
 		
 		//escopo de flash 
-		flash.addFlashAttribute("msg", "Cliente removido com Sucesso!")
-			 .addFlashAttribute("css", "success");
+		flash.addFlashAttribute(MESSAGE_NAME, CLIENTE_REMOVE_SUCCESS)
+			 .addFlashAttribute(CSS__NAME, CSS_VALUE_SUCCESS);
 		  
-		return new ModelAndView("redirect:/clientes");//Redirect after POST
+		return "redirect:/clientes";//Redirect after POST
 	}
 }

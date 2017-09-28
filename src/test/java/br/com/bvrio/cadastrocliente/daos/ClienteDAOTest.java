@@ -29,8 +29,6 @@ public class ClienteDAOTest {
 	@Autowired
 	private ClienteDAO clienteDao;
 	
-	
-	
 	@Test
 	public void deveBuildarClientesCorretamente(){
 		Calendar data = new Calendar.Builder().setDate(1990, Calendar.AUGUST, 19).build();
@@ -43,7 +41,6 @@ public class ClienteDAOTest {
 		assertEquals("wallace@gmail.com1", clientes.get(1).getEmail());
 		assertEquals("wallace@gmail.com2", clientes.get(2).getEmail());
 		assertEquals("wallace@gmail.com3", clientes.get(3).getEmail());
-		
 	}
 	
 	@Test
@@ -68,29 +65,15 @@ public class ClienteDAOTest {
 					  .more(4)
 					  .buildAll();
 		
-		clientes.stream().forEach(t -> {
-			try {
-				clienteDao.adiciona(t);
-			} catch (PersistenciaException e) {
-				e.printStackTrace();
-			}
+		clientes.stream().forEach(t -> {			
+				clienteDao.adiciona(t);			
 		});
+		
 		long idade = clienteDao.buscaPorEmail("wallace@gmail.com").getIdade();
 		List<Cliente> clientesDoBanco = clienteDao.listaTodos();
 		
 		assertEquals(5, clientesDoBanco.size());
 		assertEquals(27, idade);
-	}
-	
-	@Test(expected=PersistenciaException.class)
-	@Transactional
-	public void DeveLancarExcecaoAoAdicionarEmailsRepedidos() throws PersistenciaException{
-		Calendar data = new Calendar.Builder().setDate(1990, Calendar.AUGUST, 19).build();
-		Cliente cliente = ClienteBuilder.newCliente("wallace@gmail.com", data).buildOne();
-		
-		clienteDao.adiciona(cliente);
-		clienteDao.adiciona(cliente);
-		
 	}
 
 }

@@ -45,7 +45,7 @@ public class JPAConfiguration {
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		props.setProperty("hibernate.show_sql", "true");
 		props.setProperty("hibernate.hbm2ddl.auto", "update");
-		props.setProperty("hibernate.generate_statistics", "true");
+		props.setProperty("hibernate.generate_statistics", "true");		
 		return props;
 	}
 
@@ -55,7 +55,7 @@ public class JPAConfiguration {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
 		dataSource.setDriverClass("com.mysql.jdbc.Driver");
 		dataSource.setUser("root");
-		dataSource.setPassword("");
+		dataSource.setPassword("marciane");
 		dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/cadastrocliente");
 
 		// configuration pool via c3p0
@@ -64,7 +64,7 @@ public class JPAConfiguration {
 	    dataSource.setMaxStatements(50); 
 	    dataSource.setIdleConnectionTestPeriod(300);//1s, a cada 50 min testa as conexões ociosas
 	    dataSource.setMaxIdleTimeExcessConnections(240);
-		 
+	    
 		return dataSource;
 	}
 

@@ -17,7 +17,7 @@ public class DataSourceConfigurationTest {
 		dataSource.setUrl("jdbc:mysql://localhost:3306/cadastrocliente_test");
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUsername("root");
-		dataSource.setPassword("");
+		dataSource.setPassword("marciane");
 	  
 		return dataSource;
 	}

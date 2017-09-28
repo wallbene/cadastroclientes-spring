@@ -6,10 +6,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 
-@SuppressWarnings("serial")
+public class DAO<T, I extends Serializable> implements Serializable {
 
-public class DAO<T, I> implements Serializable {
-
+	private static final long serialVersionUID = 1L;
+	
 	private final Class<T> classe;
 	private EntityManager em;
 
@@ -30,8 +30,6 @@ public class DAO<T, I> implements Serializable {
 		em.merge(t);
 	}
 	
-	
-
 	public List<T> listaTodos() {
 		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
 		query.select(query.from(classe));
@@ -41,7 +39,7 @@ public class DAO<T, I> implements Serializable {
 		return lista;
 	}
 
-	public T buscaPorId(I id) {
+	public T buscaPorId(Serializable id) {
 		T instancia = em.find(classe, id);
 		return instancia;
 	}
@@ -51,16 +49,6 @@ public class DAO<T, I> implements Serializable {
 				.getSingleResult();
 
 		return (int) result;
-	}
-
-	public List<T> listaTodosPaginada(int firstResult, int maxResults) {
-		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
-		query.select(query.from(classe));
-
-		List<T> lista = em.createQuery(query).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
-
-		return lista;
 	}
 
 }

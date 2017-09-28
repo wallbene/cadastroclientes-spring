@@ -1,5 +1,6 @@
 package br.com.bvrio.cadastrocliente.daos;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,7 +12,6 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.bvrio.cadastrocliente.exceptions.PersistenciaException;
 import br.com.bvrio.cadastrocliente.models.Cliente;
 
 @Repository
@@ -38,11 +38,12 @@ public class ClienteDAO {
 			return null;
 		}
 	}
-	public void adiciona(Cliente cliente) throws PersistenciaException {
-		if(buscaPorEmail(cliente.getEmail()) != null){
-			throw new PersistenciaException("Esse email já existe no banco de dados");
-		}
-		dao.adiciona(cliente);
+	public void adiciona(Cliente t) {
+		dao.adiciona(t);
+	}
+	
+	public Cliente buscaPorId(Serializable id) {
+		return dao.buscaPorId(id);
 	}
 
 	public void remove(Cliente t) {
@@ -57,8 +58,10 @@ public class ClienteDAO {
 		return dao.listaTodos();
 	}
 
-	public Cliente buscaPorId(Integer id) {
-		return dao.buscaPorId(id);
+
+	public int contaTodos() {
+		return dao.contaTodos();
 	}
+	
 
 }

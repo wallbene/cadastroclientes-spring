@@ -164,11 +164,17 @@
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>4.1.0.RELEASE</version>
+		</dependency>
+
+		<!-- Mail -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
 		</dependency>
 
 		<!--Testes -->
@@ -225,7 +231,8 @@
 				</executions>
 			</plugin>
 
-			<!-- mvn jetty:run -->
+			<!-- depoloy local usando maven 
+			mvn package jetty:run -->
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
@@ -237,7 +244,11 @@
 					</webApp>
 				</configuration>
 			</plugin>
-
+			
+			<!-- Comando para rodar a aplicação atravéz de um package war com o webApp-runner pelo terminal  
+				\\// java -jar target/dependency/webapp-runner.jar target/*.war //\\
+			 -->
+			 
 			<!-- heroku -->
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>

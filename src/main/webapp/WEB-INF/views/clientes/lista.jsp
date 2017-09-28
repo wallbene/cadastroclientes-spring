@@ -6,39 +6,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
 
-<tags:pageTamplate titulo="Lista dos Clientes cadastrados">
+<tags:pageTamplate titulo="Lista dos clientes cadastrados">
 
 	
 	<jsp:attribute name="csrfOnHead">
-	<!-- csrf ficará disponível no head para o envio da requisição ajax -->
+	<!-- csrf ficará disponível no head para o envio das requisições ajax -->
 		<meta name="_csrf" content="${_csrf.token}"/>
 		<meta name="_csrf_header" content="${_csrf.headerName}"/>
 	</jsp:attribute>
 	
 	<jsp:attribute name="scriptRemove">
-	
-		<script>
-			function removeCliente(url, id){ 
-		 
-				var token = $("meta[name='_csrf']").attr("content");
-				var header = $("meta[name='_csrf_header']").attr("content");
-		
-			               $.ajax({
-			                     type: "POST",	                   
-			                     url: url,
-			                     beforeSend: function(xhr) {	                        
-			                         xhr.setRequestHeader(header, token);
-			                     },
-			                     success: function () {
-			                    	 
-			                    	 $('#'+id).remove();
-			                    	   
-			                     }
-			               });
-			};
-					
-	</script>
-			
+		<c:url value="/resources/js" var="resourceJs" />
+			<script src="${resourceJs}/remove-cliente.js" ></script>			
 	</jsp:attribute>
 	
 	<jsp:body>
@@ -48,8 +27,8 @@
 				<button type="button" class="close" data-dismiss="alert" aria-label="close">
 					<span aria-hidden="true">x</span>
 				</button>
-				<strong>${msg }</strong>
-			</div>
+				<strong><fmt:message key="${msg }"/></strong>
+			</div><!-- fim mensagens de alertas -->
 		</c:if>
 			
 		    <h1><fmt:message key="titulo.principal.lista.cliente"/></h1>

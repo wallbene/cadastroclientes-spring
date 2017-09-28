@@ -11,13 +11,11 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.bvrio.cadastrocliente.exceptions.PersistenciaException;
-import br.com.bvrio.cadastrocliente.models.Role;
 import br.com.bvrio.cadastrocliente.models.Usuario;
 
 @Transactional
 @Repository
-public class UsuarioDAO {
+public class UsuarioDAO{
 	
 	@PersistenceContext
 	private EntityManager manager;
@@ -30,7 +28,6 @@ public class UsuarioDAO {
 		
 	}
 	
-	
 	public Usuario buscaPorEmail(String email){
 		TypedQuery<Usuario> query = manager.createQuery("select u from usuario u where u.email = :pEmail", Usuario.class)
 									.setParameter("pEmail", email);
@@ -38,26 +35,12 @@ public class UsuarioDAO {
 		try{
 			return query.getSingleResult();
 		}catch (NoResultException e) {
+			System.out.println("nenhum email encontrado");
 			return null;
 		}
 	}
 	
-	public void adiciona(Usuario usuario) throws PersistenciaException {
-		if(buscaPorEmail(usuario.getEmail()) != null){
-			throw new PersistenciaException("Já existe cadastro de usuário com esse email");
-		}
-		//busca a Role, associa ao usuario e persiste no banco
-		Role role = manager.find(Role.class, "ROLE_ADMIN");
-		if(role == null){
-			role = new Role("ROLE_ADMIN");
-			manager.persist(role);
-			role = manager.find(Role.class, role.getNome());
-			
-		}
-		else{
-			System.out.println("Retornou a role corretamente " + role.getNome());
-		}
-		usuario.addRole(role);
+	public void adiciona(Usuario usuario) {		
 		dao.adiciona(usuario);
 	}
 
@@ -80,6 +63,4 @@ public class UsuarioDAO {
 	public int contaTodos() {
 		return dao.contaTodos();
 	}
-
-
 }

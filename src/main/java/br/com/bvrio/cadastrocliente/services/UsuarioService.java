@@ -1,27 +1,19 @@
 package br.com.bvrio.cadastrocliente.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-import br.com.bvrio.cadastrocliente.daos.UsuarioDAO;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import br.com.bvrio.cadastrocliente.models.Usuario;
 
-@Service
-public class UsuarioService implements UserDetailsService {
-	
-	@Autowired
-	private UsuarioDAO dao;
-	
-
-		//método usado pelo Spring Security
-		@Override
-		public Usuario loadUserByUsername(String email){
-			 	Usuario usuario = dao.buscaPorEmail(email);	
-			if(usuario == null) throw new UsernameNotFoundException("Usuario " + email + "não foi encontrado");
-			
-			return usuario;
-		}
+public interface UsuarioService extends UserDetailsService {
+				
+			void adiciona(Usuario usuario);			
+			void remove(Usuario t);
+			void atualiza(Usuario t);
+			List<Usuario> listaTodos();
+			Usuario buscaPorId(String id);
+			int contaTodos();
+			Usuario buscaPorEmail(String email);
 
 }

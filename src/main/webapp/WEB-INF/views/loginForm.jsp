@@ -16,16 +16,15 @@
 		<c:url value="/resources/" var="resourcePath" />
 		<link rel="stylesheet" href="${resourcePath}css/bootstrap.min.css" >
 		<link rel="stylesheet" href="${resourcePath}css/bootstrap-theme.min.css" >
+		<link rel="stylesheet" href="${resourcePath}css/login.css" >
 	
 	
 	<title>Login - BVRio</title>
 	</head>
 	<body>
 		<div class="container">
-			
-		<h1>Login BVRio</h1>
-			<form:form servletRelativeAction="/login" method="post">
-			
+			<form:form servletRelativeAction="/login" method="post" cssClass="form-signin">
+			<h2 class="form-signin-heading"><fmt:message key="login.subtitulo"/></h2>
 				<c:if test="${param.error != null}">
 	                <div class="alert alert-danger">
 	                       <c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">	                       	
@@ -35,15 +34,20 @@
 	                </div>
 	            </c:if>
 			
-				<div class="form-group">
-					<label><fmt:message key="label.email"/></label>
-					<input type="email" Class="form-control" name="username" required autofocus/>
+				<label for="inputEmail" class="sr-only"><fmt:message key="label.email"/></label>					
+				<input type="email" id="inputEmail" Class="form-control" name="username" placeholder="<fmt:message key="label.email"/>" required autofocus/>				
+				<label for="inputPassword" class="sr-only"><fmt:message key="label.senha"/></label>
+				<input Class="form-control" id="inputPassword" type="password" placeholder="<fmt:message key="label.senha"/>" name="password" required />
+				<!-- não implementado -->
+				<div class="checkbox">
+		          <label>
+		            <input type="checkbox" value="remember-me"> Remember me
+		          </label>
+        		</div>
+				<button class="btn btn-lg btn-primary btn-block" type="submit"><fmt:message key="field.button.entrar"/></button>
+				<div>
+					<a href="#">Esqueci minha senha</a>
 				</div>
-				<div class="form-group">
-					<label><fmt:message key="label.senha"/></label>
-					<input Class="form-control" type="password" name="password" required />
-				</div>
-				<button class="btn btn-primary" type="submit"><fmt:message key="field.button.entrar"/></button>
 			</form:form>
 		</div><!-- fim container -->
 	</body>
