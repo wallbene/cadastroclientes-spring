@@ -15,9 +15,10 @@
 		<meta name="_csrf_header" content="${_csrf.headerName}"/>
 	</jsp:attribute>
 	
-	<jsp:attribute name="scriptRemove">
+	<jsp:attribute name="scriptLista">
 		<c:url value="/resources/js" var="resourceJs" />
-			<script src="${resourceJs}/remove-cliente.js" ></script>			
+			<script src="${resourceJs}/remove-cliente.js" ></script>
+			<script src="${resourceJs}/filtra-clientes.js" ></script>		
 	</jsp:attribute>
 	
 	<jsp:body>
@@ -33,7 +34,9 @@
 			
 		    <h1><fmt:message key="titulo.principal.lista.cliente"/></h1>
 		    <div class="table-responsive">
-			    <table class="table table-condensed table-triped table-hover">
+		    	<label>Busca</label>
+		    	<input type="search" class="form-control" name="filtro" id="filtra-clientes" placeholder="Digite o nome do cliente">
+			    <table class="table table-condensed table-triped table-bordered table-hover">
 			    <thead>
 			        <tr>
 			            <th><fmt:message key="label.nome"/></th>
@@ -43,18 +46,23 @@
 			            <th></th>
 			        </tr>
 				</thead>
-				<tbody>
+				<tbody id="tabela-clientes">
 			        <c:forEach items="${clientes}" var="cliente">
-			            <tr id="${cliente.id}">
-			            	<c:url value="/clientes/${cliente.id}" var="detalhePath" />
+			            <tr class="cliente" id="${cliente.id}">			       
 			               	<fmt:message key="field.title.mostrar.detalhes" var="titleDetalhes"/>
-			                <td><a title="${titleDetalhes } " href="${detalhePath}">${cliente.nome}</a></td>
-			                <td>${cliente.email}</td>
-			                <td><fmt:formatDate value="${cliente.dataNascimento.time}" pattern="dd/MM/yyyy"/></td>
+			                <td class="info-nome">${cliente.nome}</td>
+			                <td class="info-email">${cliente.email}</td>
+			                <td class="info-data"><fmt:formatDate value="${cliente.dataNascimento.time}" pattern="dd/MM/yyyy"/></td>
 			                              
 			                <!-- caminhos -->
+			                <c:url value="/clientes/${cliente.id}" var="detalhePath" />
 			                <c:url value="/clientes/${cliente.id}/alterar" var="alterarPath" />
 			                <c:url value="/clientes/${cliente.id}/remover" var="removerPath" />
+			                <td>
+			                	<button class="btn btn-primary" onclick="location.href='${detalhePath}'" title="${titleDetalhes } ${cliente.nome }">
+			                		<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+								</button>
+			                </td>			                
 			                <fmt:message key="field.title.alterar" var="titleAlterar"/>
 			                <td>
 			                	<button class="btn btn-primary" onclick="location.href='${alterarPath}'" title="${titleAlterar } ${cliente.nome }">
@@ -62,18 +70,11 @@
 								</button>
 			                </td>
 			                <td>
-			                <fmt:message key="field.title.remover" var="titleRemover"/>
-			                <button id="removerCliente" class="btn btn-danger" onclick="removeCliente('${removerPath}', '${cliente.id }')" title="${titleRemover } ${cliente.nome }">
-							  		  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>ajax
-							 </button>
-			                
-			                <form:form action="${removerPath}"  method="post">
-							  		<button type="submit" class="btn btn-danger" title="Remover ${cliente.nome }">
-							  		  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-							   		</button>
-			                </form:form>
-								</td>
-			                
+				                <fmt:message key="field.title.remover" var="titleRemover"/>
+				                <button id="removerCliente" class="btn btn-danger" onclick="removeCliente('${removerPath}', '${cliente.id }')" title="${titleRemover } ${cliente.nome }">
+								  		  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>ajax
+								 </button>
+							</td> 
 			            </tr>
 			        </c:forEach>
 			      </tbody>

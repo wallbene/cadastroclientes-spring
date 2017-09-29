@@ -3,7 +3,7 @@
 <%@ attribute name="titulo"  required="true"%>
 <%@ attribute name="scriptInputs" fragment="true" %>
 <%@ attribute name="csrfOnHead"  fragment="true" %>
-<%@ attribute name="scriptRemove"  fragment="true" %>
+<%@ attribute name="scriptLista"  fragment="true" %>
 
 
 <!DOCTYPE html>
@@ -16,6 +16,7 @@
 		<c:url value="/resources/" var="resourcePath" />
 		<link rel="stylesheet" href="${resourcePath}css/bootstrap.min.css" >
 		<link rel="stylesheet" href="${resourcePath}css/bootstrap-theme.min.css" >
+		<link rel="stylesheet" href="${resourcePath}css/navbar-fixed-top.css" >
 	
 	
 	<title>${titulo } - BVRio</title>
@@ -33,7 +34,7 @@
     <script src="${resourcePath}js/jquery-3.2.1.min.js" ></script>
     <script src="${resourcePath}js/bootstrap.min.js" ></script>
 	<jsp:invoke fragment="scriptInputs"/>
-	<jsp:invoke fragment="scriptRemove"/>
+	<jsp:invoke fragment="scriptLista"/>
 	
  </body>
 </html>
