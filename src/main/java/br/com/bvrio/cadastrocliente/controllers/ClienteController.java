@@ -3,8 +3,6 @@ package br.com.bvrio.cadastrocliente.controllers;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import java.sql.SQLException;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -94,9 +92,8 @@ public class ClienteController {
 	
 	//exibe detalhes de um cliente
 	@RequestMapping("/{id}")
-	public String detalhar(@PathVariable("id") Integer id, Model model){
-		Cliente cliente = clienteService.buscaPorId(id);
-		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
+	public String detalhar(@PathVariable("id") Integer id, Model model) throws ClienteNotFoundException{
+		Cliente cliente = clienteService.buscaPorId(id);	
 		
 		model.addAttribute("cliente", cliente);
 		
@@ -133,12 +130,10 @@ public class ClienteController {
 	
 	// exibe o formulário de alterar
 	@RequestMapping(value="/{id}/alterar", method=GET)
-	public String formAlterar(@PathVariable("id") Integer id, Model model) throws SQLException{
+	public String formAlterar(@PathVariable("id") Integer id, Model model) throws ClienteNotFoundException{
 		System.out.println("entrou no alterar");
 		
 		Cliente cliente = clienteService.buscaPorId(id);
-		
-		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
 		
 		model.addAttribute("estados", estados)
 			.addAttribute("clienteForm", cliente);
@@ -150,10 +145,9 @@ public class ClienteController {
 	//remove cliente
 	@CacheEvict(value="listaClientes", allEntries=true)
 	@RequestMapping(value="/{id}/remover", method = POST)
-	public String remover(@PathVariable("id") Integer id, HttpServletResponse response, RedirectAttributes flash){
+	public String remover(@PathVariable("id") Integer id, HttpServletResponse response, RedirectAttributes flash) throws ClienteNotFoundException{
 		
 		Cliente cliente = clienteService.buscaPorId(id);
-		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
 		
 		clienteService.remove(cliente);
 		response.setStatus(200);

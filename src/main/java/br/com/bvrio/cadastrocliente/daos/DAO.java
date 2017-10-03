@@ -19,8 +19,10 @@ public class DAO<T, I extends Serializable> implements Serializable {
 	}
 
 	public void adiciona(T t) {
+		
 			em.persist(t);
-		}
+			
+	}
 
 	public void remove(T t) {
 		em.remove(em.merge(t));

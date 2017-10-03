@@ -39,6 +39,7 @@ public class ClienteDAO {
 		}
 	}
 	public void adiciona(Cliente t) {
+		
 		dao.adiciona(t);
 	}
 	

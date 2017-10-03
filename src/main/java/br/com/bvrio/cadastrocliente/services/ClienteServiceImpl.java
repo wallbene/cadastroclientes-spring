@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.bvrio.cadastrocliente.daos.ClienteDAO;
+import br.com.bvrio.cadastrocliente.exceptions.ClienteNotFoundException;
 import br.com.bvrio.cadastrocliente.models.Cliente;
 
 @Service("clienteService")
@@ -43,8 +44,10 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 	
 	@Override
-	public Cliente buscaPorId(Integer id) {
-		return dao.buscaPorId(id);
+	public Cliente buscaPorId(Integer id) throws ClienteNotFoundException {
+		Cliente cliente = dao.buscaPorId(id);
+		if(cliente ==null) throw new ClienteNotFoundException("Cliente não encontrado");
+		return cliente;
 	}
 
 	@Override

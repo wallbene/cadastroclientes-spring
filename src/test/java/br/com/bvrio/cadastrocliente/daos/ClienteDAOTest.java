@@ -1,11 +1,15 @@
 package br.com.bvrio.cadastrocliente.daos;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.persistence.PersistenceException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,6 +78,15 @@ public class ClienteDAOTest {
 		
 		assertEquals(5, clientesDoBanco.size());
 		assertEquals(27, idade);
+	}
+	@Test(expected= PersistenceException.class)
+	@Transactional
+	public void naoDeveAdicionarClienteComEmailRepetido(){
+		List<Cliente> clientes = Arrays.asList(ClienteBuilder.newCliente().buildOne(),
+					  ClienteBuilder.newCliente().buildOne());
+		
+		clientes.forEach(cliente -> this.clienteDao.adiciona(cliente));// LAMBDA \\ () -> { }
+		assertEquals(5, clienteDao.contaTodos());
 	}
 
 }

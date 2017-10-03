@@ -55,7 +55,7 @@ public class JPAConfiguration {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
 		dataSource.setDriverClass("com.mysql.jdbc.Driver");
 		dataSource.setUser("root");
-		dataSource.setPassword("marciane");
+		dataSource.setPassword("");
 		dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/cadastrocliente");
 
 		// configuration pool via c3p0
